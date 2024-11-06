@@ -1,0 +1,26 @@
+// Function to generate the YouTube thumbnail URL
+function get_youtube_thumbnail($url) {
+    // Regular expression to match the YouTube video ID
+    preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $url, $matches);
+    
+    // Check if a video ID was found
+    if (!empty($matches[1])) {
+        $video_id = $matches[1];
+        return "https://img.youtube.com/vi/{$video_id}/0.jpg";
+    }
+    return 'Invalid YouTube URL';
+}
+
+// Shortcode to use the function in posts or pages
+function youtube_thumbnail_shortcode($atts) {
+    // Extract the URL from the shortcode attributes
+    $atts = shortcode_atts(array(
+        'url' => ''
+    ), $atts);
+
+    // Get the YouTube thumbnail URL
+    return get_youtube_thumbnail($atts['url']);
+}
+
+// Register the shortcode in WordPress
+add_shortcode('youtube_thumbnail', 'youtube_thumbnail_shortcode');
